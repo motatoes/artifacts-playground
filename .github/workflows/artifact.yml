@@ -101,7 +101,7 @@ jobs:
             --header 'Content-Type: application/octet-stream' \
             --header 'Content-Range: bytes 0-10/11' \
             --data 'hello world' \
-            "${RESOURCE_URL}?itemPath=${ARTIFACT_NAME}/data.txt"
+            "${RESOURCE_URL}?itemPath=${ARTIFACT_NAME}2/data.txt"
 
           curl \
             -XPATCH \
