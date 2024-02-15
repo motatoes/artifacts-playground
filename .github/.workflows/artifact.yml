@@ -1,0 +1,55 @@
+name: Digger Workflow
+
+on:
+  pull_request
+
+jobs:
+  write-to-artefact:
+    runs-on: ubuntu-latest
+    steps:
+      - name: write file
+        id: write
+        shell: bash
+        run: |
+
+          set -euxo pipefail
+
+          echo abczyz > data.txt
+          
+          ARTIFACT_NAME='artifact-name'
+
+          HEADERS=(
+            --header 'Accept: application/json;api-version=6.0-preview'
+            --header "Authorization: Bearer $ACTIONS_RUNTIME_TOKEN"
+          )
+          ARTIFACT_BASE="${ACTIONS_RUNTIME_URL}_apis/pipelines/workflows/${GITHUB_RUN_ID}/artifacts?api-version=6.0-preview"
+
+          RESOURCE_URL="$(
+            curl \
+              -XPOST \
+              --silent \
+              --fail-with-body \
+              "${HEADERS[@]}" \
+              --header 'Content-Type: application/json' \
+              --data '{"type": "actions_storage", "name": "'"${ARTIFACT_NAME}"'"}' \
+              "$ARTIFACT_BASE" | jq --exit-status --raw-output .fileContainerResourceUrl
+          )"
+
+          curl \
+            -XPUT \
+            --silent \
+            --fail-with-body \
+            "${HEADERS[@]}" \
+            --header 'Content-Type: application/octet-stream' \
+            --header 'Content-Range: bytes 0-10/11' \
+            --data 'hello world' \
+            "${RESOURCE_URL}?itemPath=${ARTIFACT_NAME}/data.txt"
+
+          curl \
+            -XPATCH \
+            --silent \
+            --fail-with-body \
+            "${HEADERS[@]}" \
+            --header 'Content-Type: application/json' \
+            --data '{"size": 11}' \
+            "${ARTIFACT_BASE}&artifactName=${ARTIFACT_NAME}"
