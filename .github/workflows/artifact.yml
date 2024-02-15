@@ -22,15 +22,12 @@ jobs:
             core.exportVariable('ACTIONS_CACHE_URL', process.env['ACTIONS_CACHE_URL'])
             core.exportVariable('ACTIONS_RUNTIME_TOKEN', process.env['ACTIONS_RUNTIME_TOKEN'])
             core.exportVariable('ACTIONS_RUNTIME_URL', process.env['ACTIONS_RUNTIME_URL'])
-                
+
       - name: write file
         id: write
         shell: bash
         run: |
           set -euxo pipefail
-          export ACTIONS_RUNTIME_TOKEN=$ACTIONS_ID_TOKEN_REQUEST_TOKEN
-          export ACTIONS_RUNTIME_URL=$ACTIONS_ID_TOKEN_REQUEST_URL
-
           echo abczyz > data.txt
           
           ARTIFACT_NAME='artifact-name'
