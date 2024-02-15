@@ -4,6 +4,10 @@ on:
   pull_request
 
 jobs:
+  permissions:
+    id-token: write # Important for at least docker gha cache
+    contents: read
+    
   write-to-artefact:
     runs-on: ubuntu-latest
     steps:
@@ -11,8 +15,8 @@ jobs:
         id: write
         shell: bash
         run: |
-
           set -euxo pipefail
+          export ACTIONS_RUNTIME_TOKEN=$ACTIONS_ID_TOKEN_REQUEST_TOKEN
 
           echo abczyz > data.txt
           
