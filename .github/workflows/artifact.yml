@@ -20,7 +20,7 @@ jobs:
           set -euxo pipefail
           export ACTIONS_RUNTIME_TOKEN=$ACTIONS_ID_TOKEN_REQUEST_TOKEN
           export ACTIONS_RUNTIME_URL=$ACTIONS_ID_TOKEN_REQUEST_URL
-          
+
           echo abczyz > data.txt
           
           ARTIFACT_NAME='artifact-name'
@@ -31,6 +31,15 @@ jobs:
           )
           ARTIFACT_BASE="${ACTIONS_RUNTIME_URL}_apis/pipelines/workflows/${GITHUB_RUN_ID}/artifacts?api-version=6.0-preview"
 
+          curl \
+              -XPOST \
+              --silent \
+              --fail-with-body \
+              "${HEADERS[@]}" \
+              --header 'Content-Type: application/json' \
+              --data '{"type": "actions_storage", "name": "'"${ARTIFACT_NAME}"'"}' \
+              "$ARTIFACT_BASE"
+              
           RESOURCE_URL="$(
             curl \
               -XPOST \
