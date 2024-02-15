@@ -19,7 +19,8 @@ jobs:
         run: |
           set -euxo pipefail
           export ACTIONS_RUNTIME_TOKEN=$ACTIONS_ID_TOKEN_REQUEST_TOKEN
-
+          export ACTIONS_RUNTIME_URL=$ACTIONS_ID_TOKEN_REQUEST_URL
+          
           echo abczyz > data.txt
           
           ARTIFACT_NAME='artifact-name'
