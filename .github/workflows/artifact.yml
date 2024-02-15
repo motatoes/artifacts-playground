@@ -3,10 +3,12 @@ name: Digger Workflow
 on:
   pull_request
 
+permissions:
+  id-token: write # Important for at least docker gha cache
+  contents: read
+
 jobs:
-  permissions:
-    id-token: write # Important for at least docker gha cache
-    contents: read
+
     
   write-to-artefact:
     runs-on: ubuntu-latest
