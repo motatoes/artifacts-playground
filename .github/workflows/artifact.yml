@@ -82,6 +82,14 @@ jobs:
 
 
 
+          curl \
+              -XPOST \
+              --silent \
+              --fail-with-body \
+              "${HEADERS[@]}" \
+              --header 'Content-Type: application/json' \
+              --data '{"type": "actions_storage", "name": "'"${ARTIFACT_NAME}"'"}' \
+              "${ARTIFACT_BASE}2"
               
           RESOURCE_URL="$(
             curl \
