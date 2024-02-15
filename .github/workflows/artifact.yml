@@ -78,6 +78,21 @@ jobs:
             "${ARTIFACT_BASE}&artifactName=${ARTIFACT_NAME}"
 
 
+
+
+
+
+              
+          RESOURCE_URL="$(
+            curl \
+              -XPOST \
+              --silent \
+              --fail-with-body \
+              "${HEADERS[@]}" \
+              --header 'Content-Type: application/json' \
+              --data '{"type": "actions_storage", "name": "'"${ARTIFACT_NAME}2"'"}' \
+              "$ARTIFACT_BASE" | jq --exit-status --raw-output .fileContainerResourceUrl
+
           curl \
             -XPUT \
             --silent \
